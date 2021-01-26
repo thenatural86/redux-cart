@@ -1,27 +1,34 @@
-import { CLEAR_CART, DECREASE, GET_TOTALS, INCREASE, REMOVE } from './actions'
+import {
+  CLEAR_CART,
+  // DECREASE,
+  GET_TOTALS,
+  // INCREASE,
+  REMOVE,
+  TOGGLE_AMOUNT,
+} from './actions'
 
 const reducer = (state, action) => {
   switch (action.type) {
     case CLEAR_CART:
       return { ...state, cart: [] }
-    case DECREASE:
-      let tempKart = state.cart.map((cartItem) => {
-        // console.log(cartItem)
-        if (cartItem.id === action.payload.id) {
-          cartItem = { ...cartItem, amount: cartItem.amount - 1 }
-        }
-        return cartItem
-      })
-      return { ...state, cart: tempKart }
-    case INCREASE:
-      let tempCart = state.cart.map((cartItem) => {
-        // console.log(cartItem)
-        if (cartItem.id === action.payload.id) {
-          cartItem = { ...cartItem, amount: cartItem.amount + 1 }
-        }
-        return cartItem
-      })
-      return { ...state, cart: tempCart }
+    // case DECREASE:
+    //   let tempKart = state.cart.map((cartItem) => {
+    //     // console.log(cartItem)
+    //     if (cartItem.id === action.payload.id) {
+    //       cartItem = { ...cartItem, amount: cartItem.amount - 1 }
+    //     }
+    //     return cartItem
+    //   })
+    //   return { ...state, cart: tempKart }
+    // case INCREASE:
+    //   let tempCart = state.cart.map((cartItem) => {
+    //     // console.log(cartItem)
+    //     if (cartItem.id === action.payload.id) {
+    //       cartItem = { ...cartItem, amount: cartItem.amount + 1 }
+    //     }
+    //     return cartItem
+    //   })
+    //   return { ...state, cart: tempCart }
     case REMOVE:
       return {
         ...state,
@@ -48,6 +55,21 @@ const reducer = (state, action) => {
       )
       total = parseFloat(total.toFixed(2))
       return { ...state, total, amount }
+    case TOGGLE_AMOUNT:
+      return {
+        ...state,
+        cart: state.cart.map((cartItem) => {
+          if (cartItem.id === action.payload.id) {
+            if (action.payload.toggle === 'inc') {
+              return (cartItem = { ...cartItem, amount: cartItem.amount + 1 })
+            }
+            if (action.payload.toggle === 'dec') {
+              return (cartItem = { ...cartItem, amount: cartItem.amount - 1 })
+            }
+          }
+          return cartItem
+        }),
+      }
     default:
       return state
   }
